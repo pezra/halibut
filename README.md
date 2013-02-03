@@ -1,6 +1,6 @@
 # Halibut [![endorse](http://api.coderwall.com/locks/endorsecount.png)](http://coderwall.com/locks)
 
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/locks/halibut)
+[![Code Climate](https://codeclimate.com/github/locks/halibut.png)](https://codeclimate.com/github/locks/halibut)
 [![Build Status](https://secure.travis-ci.org/locks/halibut.png?branch=master)](https://travis-ci.org/locks/halibut)
 [![Dependency Status](https://gemnasium.com/locks/halibut.png)](https://gemnasium.com/locks/halibut)
 
@@ -37,12 +37,12 @@ There are three ways to get a resource with halibut: manual, Builder, and JSON.
 require 'halibut'
 
 # manually creating a resource
-order = Halibut::HAL::Resource.new "/orders/123"
+order = Halibut::Core::Resource.new "/orders/123"
 order.set_property "total", 30.00
 order.set_property "currency", "USD"
 order.set_property "status", "shipped"
 
-resource = Halibut::HAL::Resource.new "/orders"
+resource = Halibut::Core::Resource.new "/orders"
 resource.add_link "find", "/orders{?id}", templated: true
 resource.add_link "next", "/orders/1", "name" => 'hotdog'
 resource.add_link "next", "/orders/9"
