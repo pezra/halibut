@@ -21,7 +21,7 @@ module Halibut::Adapter
   module JSON
 
     # Returns an Halibut::HAL::Resource from a JSON string
-    def self.load(json)
+    def self.parse(json)
       ResourceExtractor.new(json).resource
     end
 
@@ -105,7 +105,7 @@ module Halibut::Adapter
           embeds = ([] << values).flatten
 
           embeds.map  {|embed| MultiJson.dump embed                     }
-                .map  {|embed| Halibut::Adapter::JSON.load embed        }
+                .map  {|embed| Halibut::Adapter::JSON.parse embed       }
                 .each {|embed| @halibut.embed_resource(relation, embed) }
         end
       end
