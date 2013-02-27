@@ -14,7 +14,7 @@ describe Halibut::Builder do
 
     it "builds empty resource with self link" do
       builder  = Halibut::Builder.new 'default'
-      resource = Halibut::Core::Resource.new 'default'
+      resource = Halibut::Core::Resource.new Halibut::Core::Link.new('default')
 
       builder.resource.must_equal resource
     end
@@ -55,6 +55,15 @@ describe Halibut::Builder do
   end
 
   describe "Links" do
+
+    it "with default link" do
+      builder = Halibut::Builder.new "/default_link"
+
+      resource = Halibut::Core::Resource.new Halibut::Core::Link.new("/default_link")
+
+      resource.must_equal builder.resource, diff(builder.resource.to_hash, resource.to_hash)
+    end
+
     it "builds resource with a single links per relation" do
       builder = Halibut::Builder.new do
         link 'cs:broms', '/broms/1'
@@ -62,8 +71,8 @@ describe Halibut::Builder do
       end
 
       resource = Halibut::Core::Resource.new
-      resource.add_link 'cs:broms', '/broms/1'
-      resource.add_link 'cs:search', '/search{?broms,noms}', templated: true
+      resource.add_link 'cs:broms', Halibut::Core::Link.new('/broms/1')
+      resource.add_link 'cs:search', Halibut::Core::Link.new('/search{?broms,noms}', templated: true)
 
       resource.must_equal builder.resource, diff(builder.resource.to_hash, resource.to_hash)
     end
@@ -76,9 +85,9 @@ describe Halibut::Builder do
       end
 
       resource = Halibut::Core::Resource.new
-      resource.add_link 'cs:broms', '/broms/1'
-      resource.add_link 'cs:broms', '/broms/2'
-      resource.add_link 'cs:search', '/search{?broms,noms}', templated: true
+      resource.add_link 'cs:broms', Halibut::Core::Link.new('/broms/1')
+      resource.add_link 'cs:broms', Halibut::Core::Link.new('/broms/2')
+      resource.add_link 'cs:search', Halibut::Core::Link.new('/search{?broms,noms}', templated: true)
 
       resource.must_equal builder.resource, diff(builder.resource.to_hash, resource.to_hash)
     end
@@ -93,7 +102,7 @@ describe Halibut::Builder do
         end
       end
 
-      game = Halibut::Core::Resource.new '/game/1'
+      game = Halibut::Core::Resource.new Halibut::Core::Link.new('/game/1')
       game.set_property(:name, 'Crash Bandicoot')
       game.set_property(:console, 'PlayStation')
 
@@ -115,11 +124,11 @@ describe Halibut::Builder do
         end
       end
 
-      game1 = Halibut::Core::Resource.new '/game/1'
+      game1 = Halibut::Core::Resource.new Halibut::Core::Link.new('/game/1')
       game1.set_property(:name, 'Crash Bandicoot')
       game1.set_property(:console, 'PlayStation')
 
-      game2 = Halibut::Core::Resource.new '/game/2'
+      game2 = Halibut::Core::Resource.new Halibut::Core::Link.new('/game/2')
       game2.set_property(:name, 'Super Mario Land')
       game2.set_property(:console, 'Game Boy')
 
@@ -148,15 +157,15 @@ describe Halibut::Builder do
         end
       end
 
-      user = Halibut::Core::Resource.new '/users/1'
+      user = Halibut::Core::Resource.new Halibut::Core::Link.new('/users/1')
       user.set_property :name, "foo"
       user.set_property :nick, "bar"
 
       resource = Halibut::Core::Resource.new
-      resource.add_link 'games', '/games/1'
-      resource.add_link 'games', '/games/2'
-      resource.add_link 'games', '/games/3'
-      resource.add_link 'next', '/games/next'
+      resource.add_link 'games', Halibut::Core::Link.new('/games/1')
+      resource.add_link 'games', Halibut::Core::Link.new('/games/2')
+      resource.add_link 'games', Halibut::Core::Link.new('/games/3')
+      resource.add_link 'next', Halibut::Core::Link.new('/games/next')
       resource.embed_resource 'users', user
 
       builder.resource.must_equal resource, diff(builder.resource.to_hash, resource.to_hash)

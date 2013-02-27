@@ -1,7 +1,7 @@
 require 'bundler/setup'
 
 require 'minitest/autorun'
-require 'minitest/hell'
+# require 'minitest/hell'
 
 require 'halibut'
 

@@ -1,5 +1,8 @@
 require 'nokogiri'
 
+require 'halibut/core/resource'
+require 'halibut/core/link'
+
 module Halibut::Adapter
 
   module XML
@@ -30,7 +33,7 @@ module Halibut::Adapter
         xml = Nokogiri::XML(xml)
 
         @document = xml.root
-        @resource = Halibut::Core::Resource.new extract_self_link
+        @resource = Halibut::Core::Resource.new Halibut::Core::Link.new(extract_self_link)
 
         extract_curie
         extract_properties
@@ -47,7 +50,7 @@ module Halibut::Adapter
         @document.namespace_scopes
                  .reject {|ns| ns.prefix.eql? 'xsi' }
                  .each do |ns|
-          @resource.add_link 'curie', ns.href, name: ns.prefix
+          @resource.add_link 'curie', Halibut::Core::Link.new(ns.href, name: ns.prefix)
         end
       end
 
@@ -64,8 +67,8 @@ module Halibut::Adapter
 
         links.each do |link|
           @resource.add_link link['rel'],
-                             link['href'],
-                             extract_link_options(link)
+                             Halibut::Core::Link.new(link['href'],
+                                                     extract_link_options(link))
         end
       end
 

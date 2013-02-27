@@ -54,7 +54,7 @@ module Halibut::Adapter
 
           link.each do |attrs|
             href      = attrs.delete 'href'
-            @halibut.add_link(relation, href, attrs)
+            @halibut.add_link(relation, Halibut::Core::Link.new(href, attrs))
           end
         end
       end

@@ -1,6 +1,7 @@
 require_relative '../spec_helper'
 
 require 'halibut/core/resource'
+require 'halibut/core/link'
 
 describe Halibut::Core::Resource do
   subject { Halibut::Core::Resource.new }
@@ -35,10 +36,11 @@ describe Halibut::Core::Resource do
       end
 
       it "default" do
-        resource = Halibut::Core::Resource.new normal_uri
+        link     = Halibut::Core::Link.new(normal_uri)
+        resource = Halibut::Core::Resource.new link
 
         resource.links.wont_be_empty
-        resource.links['self'].first.href.must_equal normal_uri
+        resource.links['self'].first.must_equal link
         resource.href.must_equal normal_uri
       end
     end
@@ -46,8 +48,10 @@ describe Halibut::Core::Resource do
     it "adds link to resource" do
       subject.links.must_be_empty
 
-      subject.add_link 'lol', normal_uri
-      subject.links['lol'].first.href.must_equal normal_uri
+      link = Halibut::Core::Link.new(normal_uri)
+
+      subject.add_link 'lol', Halibut::Core::Link.new(normal_uri)
+      subject.links['lol'].first.must_equal link
     end
 
   end

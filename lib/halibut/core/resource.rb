@@ -117,8 +117,8 @@ module Halibut::Core
     # @param [String]      href      href
     # @param [Hash]        opts      options: templated, type, name, profile,
     #                                  title, hreflang
-    def add_link(relation, href, opts={})
-      @links.add relation, Link.new(href, opts)
+    def add_link(relation, link)
+      @links.add relation, link
     end
 
     # Embeds resource in relation
@@ -134,7 +134,7 @@ module Halibut::Core
     #
     # @return [Hash] hash representation of the resource
     def to_hash
-      {}.merge(@properties).tap do |h|
+      a = {}.merge(@properties).tap do |h|
         h['_links']    = {}.merge @links    unless @links.empty?
         h['_embedded'] = {}.merge @embedded unless @embedded.empty?
       end

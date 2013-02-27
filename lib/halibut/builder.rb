@@ -1,4 +1,5 @@
 require 'halibut/core/resource'
+require 'halibut/core/link'
 
 module Halibut
 
@@ -10,6 +11,8 @@ module Halibut
     # @param [String] href
     # @param [Proc]   blk
     def initialize(href=nil, &blk)
+      href = Halibut::Core::Link.new(href) unless href.nil?
+
       @resource = Halibut::Core::Resource.new href
 
       RootContext.new(@resource, &blk)
@@ -51,7 +54,7 @@ module Halibut
       # @param [Hash]   options  Link optional parameters: templated, hreflang, etc
       # @return [Halibut::Core::Resource] resource with the link added
       def link(relation, href, options={})
-        @resource.add_link relation, href, options
+        @resource.add_link relation, Halibut::Core::Link.new(href, options)
       end
 
       # Adds a namespace to the resource.
@@ -116,7 +119,7 @@ module Halibut
       end
 
       def link(href, opts={})
-        @resource.tap {|obj| obj.add_link(@rel, href, opts) }
+        @resource.tap {|obj| obj.add_link(@rel, Halibut::Core::Link.new(href, opts)) }
       end
 
       def resource(href=nil, &blk)
