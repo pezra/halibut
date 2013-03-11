@@ -43,7 +43,7 @@ module Halibut::Core
       @embedded   = RelationMap.new
       @properties = {}
 
-      add_link('self', href) if href
+      add_link('self', resource_href)
     end
 
     # Returns the self link of the resource.
@@ -62,25 +62,19 @@ module Halibut::Core
       @links['curie']
     end
 
-    # Sets a property in the resource.
+    # Something something
     #
-    #     resource = Halibut::Core::Resource.new
-    #     resource.set_property :name, 'FooBar'
-    #     resource.property :name
-    #     # => "FooBar"
-    #
-    # @param [Object] property the key
-    # @param [Object] value    the value
-    def set_property(property, value)
-      if property == '_links' || property == '_embedded'
-        raise ArgumentError, "Argument #{property} is a reserved property"
-      end
-
-      tap { @properties[property] = value }
+    # @param [Object] property key
+    # @param [Object] value    value
+    def []=(property, value)
+      tap { set_property(property, value) }
     end
 
-    def []=(property, value)
-      tap { @properties[property] = value }
+
+    # Something something
+    #
+    def [](property)
+      @properties.fetch(property, nil)
     end
 
     # Returns the value of a property in the resource
@@ -113,10 +107,8 @@ module Halibut::Core
     #     link.name
     #     # => "Foo"
     #
-    # @param [String]      relation  relation
-    # @param [String]      href      href
-    # @param [Hash]        opts      options: templated, type, name, profile,
-    #                                  title, hreflang
+    # @param [String]      relation  Link relation
+    # @param [Link,Object] link      A Link object, preferably Halibut::Core::Link
     def add_link(relation, link)
       @links.add relation, link
     end
@@ -148,6 +140,24 @@ module Halibut::Core
       @properties == other.properties &&
       @links      == other.links      &&
       @embedded   == other.embedded
+    end
+
+    private
+    # Sets a property in the resource.
+    #
+    #     resource = Halibut::Core::Resource.new
+    #     resource.set_property :name, 'FooBar'
+    #     resource.property :name
+    #     # => "FooBar"
+    #
+    # @param [Object] property the key
+    # @param [Object] value    the value
+    def set_property(property, value)
+      if property == '_links' || property == '_embedded'
+        raise ArgumentError, "Argument #{property} is a reserved property"
+      end
+
+      tap { @properties[property] = value }
     end
   end
 end

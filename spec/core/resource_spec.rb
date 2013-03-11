@@ -10,18 +10,20 @@ describe Halibut::Core::Resource do
 
   describe "Properties" do
     it "set property" do
-      subject.set_property "property", "value"
+      subject["property"] = "value"
+      subject['warranty'] = "void"
 
-      subject.properties['property'].must_equal "value"
+      subject.property('property').must_equal "value"
+      subject['warranty'].must_equal 'void'
     end
 
     it "fails to set reserved property" do
-      -> { subject.set_property "_links", "lol" }.must_raise ArgumentError
-      -> { subject.set_property "_embedded", "lol" }.must_raise ArgumentError
+      -> { subject["_links"] = "lol" }.must_raise ArgumentError
+      -> { subject["_embedded"] = "lol" }.must_raise ArgumentError
     end
 
     it "read property" do
-      subject.set_property "property", "value"
+      subject["property"] = "value"
 
       subject.property('property').must_equal "value"
     end
@@ -38,7 +40,6 @@ describe Halibut::Core::Resource do
       it "default" do
         link     = Halibut::Core::Link.new(normal_uri)
         resource = Halibut::Core::Resource.new link
-
         resource.links.wont_be_empty
         resource.links['self'].first.must_equal link
         resource.href.must_equal normal_uri

@@ -45,7 +45,7 @@ module Halibut::Adapter
                           .reject {|k,v| k == '_embedded' }
 
         properties.each_pair do |property, value|
-          @halibut.set_property(property, value)
+          @halibut[property] = value
         end
       end
 

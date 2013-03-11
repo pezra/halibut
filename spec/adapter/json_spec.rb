@@ -20,16 +20,16 @@ describe Halibut::Adapter::JSON do
     subject = Halibut::Adapter::JSON.parse(load_json "serialize")
 
     order = Halibut::Core::Resource.new Halibut::Core::Link.new("/orders/123")
-    order.set_property "total", 30.00
-    order.set_property "currency", "USD"
-    order.set_property "status", "shipped"
+    order["total"]    = 30.00
+    order["currency"] = "USD"
+    order["status"]   = "shipped"
 
     resource = Halibut::Core::Resource.new Halibut::Core::Link.new("/orders")
     resource.add_link "find", Halibut::Core::Link.new("/orders{?id}", templated: true)
     resource.add_link "next", Halibut::Core::Link.new("/orders/1", "name" => 'hotdog')
     resource.add_link "next", Halibut::Core::Link.new("/orders/9")
-    resource.set_property "currentlyProcessing", 14
-    resource.set_property "shippedToday", 20
+    resource["currentlyProcessing"] = 14
+    resource["shippedToday"]        = 20
     resource.embed_resource "orders", order
 
     subject.must_equal resource
@@ -40,16 +40,16 @@ describe Halibut::Adapter::JSON do
     json = Halibut::Adapter::JSON.render(json)
 
     order = Halibut::Core::Resource.new Halibut::Core::Link.new("/orders/123")
-    order.set_property "total", 30.00
-    order.set_property "currency", "USD"
-    order.set_property "status", "shipped"
+    order["total"]    = 30.00
+    order["currency"] = "USD"
+    order["status"]   = "shipped"
 
     resource = Halibut::Core::Resource.new Halibut::Core::Link.new("/orders")
     resource.add_link "find", Halibut::Core::Link.new("/orders{?id}", templated: true)
     resource.add_link "next", Halibut::Core::Link.new("/orders/1", "name" => 'hotdog')
     resource.add_link "next", Halibut::Core::Link.new("/orders/9")
-    resource.set_property "currentlyProcessing", 14
-    resource.set_property "shippedToday", 20
+    resource["currentlyProcessing"] = 14
+    resource["shippedToday"]        = 20
     resource.embed_resource "orders", order
 
     resource.to_json.wont_equal json

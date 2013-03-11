@@ -58,7 +58,7 @@ module Halibut::Adapter
         properties = @document.xpath '/resource/*[not(self::link) and not(self::resource)]'
 
         properties.each do |property|
-          @resource.set_property property.name, property.content
+          @resource[property.name] = property.content
         end
       end
 

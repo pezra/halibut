@@ -44,7 +44,7 @@ module Halibut
       # @param [String] value value of the property
       # @return [Halibut::Core::resource] resource with property set
       def property(name, value)
-        @resource.set_property name, value
+        @resource[name] = value
       end
 
       # Adds a link to the respection relation of the resource.

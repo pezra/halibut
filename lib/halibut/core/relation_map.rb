@@ -25,6 +25,8 @@ module Halibut::Core
     # @param [String] relation relation that the object belongs to
     # @param [Object] item     the object to add to the relation
     def add(relation, item)
+      return item if item.nil?
+
       @relations[relation] = @relations.fetch(relation, []) << item
     end
 
