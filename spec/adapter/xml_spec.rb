@@ -35,15 +35,15 @@ describe Halibut::Adapter::XML do
 
     xml = load_resource('exampleWithNullProperty.xml')
 
-    deserialized = Halibut::Adapter::XML.load(xml)
+    deserialized = Halibut::Adapter::XML.parse(xml)
     deserialized.must_equal builder, diff(deserialized.to_hash, builder.to_hash)
   end
 
   it "provides to_xml helper" do
     skip "To Be Implemented"
 
-    xml = Halibut::Adapter::XML.load(load_resource 'exampleWithNullProperty.xml')
-    xml = Halibut::Adapter::XML.dump(xml)
+    xml = Halibut::Adapter::XML.parse(load_resource 'exampleWithNullProperty.xml')
+    xml = Halibut::Adapter::XML.render(xml)
   end
 
 end

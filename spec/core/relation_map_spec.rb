@@ -9,6 +9,14 @@ describe Halibut::Core::RelationMap do
     subject.must_be_empty
   end
 
+  it "rejects nil items" do
+    subject.add 'first', 'first'
+    subject.add 'second', nil
+
+    subject['first'].size.must_equal 1
+    subject['first'].first.must_equal 'first'
+  end
+
   it "has a single item per relation" do
     subject.add 'first' , 'first'
     subject.add 'second', 'second'

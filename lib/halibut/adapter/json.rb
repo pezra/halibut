@@ -1,13 +1,16 @@
 require 'multi_json'
 
+require 'halibut/core/resource'
+require 'halibut/core/link'
+
 module Halibut::Adapter
 
   module JSON
-    def self.load(json)
+    def self.parse(json)
       ResourceExtractor.new(json).resource
     end
 
-    def self.dump(resource)
+    def self.render(resource)
       MultiJson.dump resource.to_hash
     end
 
@@ -66,7 +69,7 @@ module Halibut::Adapter
           embeds = ([] << values).flatten
 
           embeds.map  {|embed| MultiJson.dump embed                     }
-                .map  {|embed| Halibut::Adapter::JSON.load embed        }
+                .map  {|embed| Halibut::Adapter::JSON.parse embed       }
                 .each {|embed| @halibut.embed_resource(relation, embed) }
         end
       end

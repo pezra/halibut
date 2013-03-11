@@ -6,11 +6,11 @@ require 'halibut/core/link'
 module Halibut::Adapter
 
   module XML
-    def self.load(xml)
+    def self.parse(xml)
       ResourceExtractor.new(xml).resource
     end
 
-    def self.dump(resource)
+    def self.render(resource)
       raise NotImplementedError
     end
 
