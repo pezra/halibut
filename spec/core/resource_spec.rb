@@ -50,6 +50,14 @@ describe Halibut::Core::Resource do
       subject.links['lol'].first.href.must_equal normal_uri
     end
 
+    it "are retrievable as relations" do 
+      subject.add_link 'users', "http://example.com/1"
+      subject.add_link 'users', "http://example.com/2"
+
+      subject.relations('users').map(&:href).must_include "http://example.com/1"
+      subject.relations('users').map(&:href).must_include "http://example.com/2"
+    end
+
   end
 
   describe "Namespaces" do
@@ -97,6 +105,14 @@ describe Halibut::Core::Resource do
 
       subject.embedded['users'].first.must_equal res1
       subject.embedded['users'].last.must_equal  res2
+    end
+
+    it "are retrievable as relations" do 
+      subject.embed_resource 'users', res1
+      subject.embed_resource 'users', res2
+
+      subject.relations('users').must_include res1
+      subject.relations('users').must_include res2
     end
   end
 
