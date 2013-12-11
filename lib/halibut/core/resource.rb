@@ -128,6 +128,23 @@ module Halibut::Core
       @embedded.add relation, resource
     end
 
+
+    # @return [Array] the set of resources, or links to them, with
+    # which the current resource has specified relationship.
+    #
+    #     resource = Halibut::Core::Resource.new
+    #     member2 =  Halibut::Core::Resource.new "http://example.com/2"
+    #
+    #     resource.add_link :item, "http://example.com/1
+    #     resource.embed_resource :item, member2
+    #     resource.relations :item
+    #     # => [#<Link("http://example.com/1")>, #<Resource("http://example.com/2")>]
+    #
+    # @param [String] relation relation
+    def relations(relation)
+      Array(links[relation]) + Array(embedded[relation])
+    end
+
     # Hash representation of the resource.
     # Will ommit links and embedded keys if they're empty
     #
